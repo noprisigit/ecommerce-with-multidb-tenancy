@@ -1,0 +1,32 @@
+<script setup>
+import TenantLayout from "@/Layouts/TenantLayout.vue"
+import { Head } from "@inertiajs/vue3";
+
+defineProps({
+    tenantName: String,
+});
+</script>
+
+<template>
+    <TenantLayout>
+        <Head title="Dashboard" />
+
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            Dashboard - {{ tenantName }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <!-- Content here -->
+            </div>
+        </div>
+    </TenantLayout>
+</template>

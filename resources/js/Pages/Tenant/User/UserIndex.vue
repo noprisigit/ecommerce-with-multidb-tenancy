@@ -1,11 +1,10 @@
 <script setup>
-import CentralLayout from "@/Layouts/CentralLayout.vue";
+import TenantLayout from "@/Layouts/TenantLayout.vue"
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import { Inertia } from "@inertiajs/inertia"
 import { route } from "../../../../../vendor/tightenco/ziggy/src/js";
 
 defineProps({
-    tenants: {
+    users: {
         type: Array,
         default: () => []
     },
@@ -14,22 +13,23 @@ defineProps({
 const form = useForm({});
 
 const handleDelete = (id) => {
-    if (confirm('Are you sure to delete this tenant')) {
-        form.delete(route('tenants.destroy', id));
+    if (confirm('Are you sure to delete this user')) {
+        form.delete(route('users.destroy', id));
     }
 }
 </script>
 
 <template>
-    <CentralLayout>
-        <Head title="Tenants Management" />
+    <TenantLayout>
+
+        <Head title="Create New User" />
 
         <div class="page-header d-print-none">
             <div class="container-xl">
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <h2 class="page-title">
-                            Tenants Management
+                            Users Management
                         </h2>
                     </div>
                 </div>
@@ -38,9 +38,9 @@ const handleDelete = (id) => {
         <!-- Page body -->
         <div class="page-body">
             <div class="container-xl">
-                <Link :href="route('tenants.create')" class="btn btn-primary mb-3">
+                <Link :href="route('users.create')" class="btn btn-primary mb-3">
                     <i class="fas fa-plus me-2"></i>
-                    Create New Tenant
+                    Create New User
                 </Link>
                 <div class="card">
                     <div class="table-responsive">
@@ -50,31 +50,33 @@ const handleDelete = (id) => {
                                     <th>#</th>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Address</th>
+                                    <th>Email</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <template v-if="tenants.length < 1">
+                                <template v-if="users.length < 1">
                                     <tr>
                                         <td colspan="5" class="text-danger text-center">No Data Found</td>
                                     </tr>
                                 </template>
                                 <template v-else>
-                                    <tr v-for="(tenant, index) in tenants">
+                                    <tr v-for="(user, index) in users">
                                         <td>{{ ++index }}</td>
                                         <td class="text-secondary">
-                                            {{ tenant.id }}
+                                            {{ user.id }}
                                         </td>
                                         <td class="text-secondary">
-                                            {{ tenant.name }}
+                                            {{ user.name }}
                                         </td>
                                         <td class="text-secondary">
-                                            {{ tenant.address }}
+                                            {{ user.email }}
                                         </td>
                                         <td>
-                                            <Link :href="`tenants/${tenant.id}/edit`">Edit</Link>
-                                            <a href="javascript:void(0)" class="text-danger ms-3" @click="handleDelete(tenant.id)">Delete</a>
+                                            <Link :href="`users/${user.id}/edit`">Edit</Link>
+                                            <a href="javascript:void(0)" class="text-danger ms-2" @click="handleDelete(user.id)">
+                                                Delete
+                                            </a>
                                         </td>
                                     </tr>
                                 </template>
@@ -84,5 +86,5 @@ const handleDelete = (id) => {
                 </div>
             </div>
         </div>
-    </CentralLayout>
+    </TenantLayout>
 </template>

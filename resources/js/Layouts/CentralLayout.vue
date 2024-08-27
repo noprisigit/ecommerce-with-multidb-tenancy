@@ -307,5 +307,23 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
+import { watch } from 'vue';
+import { toast } from 'vue3-toastify';
+
+const page = usePage();
+
+watch(() => page.props.flash, () => {
+    if (page.props.flash.success) {
+        toast(page.props.flash.success, {
+            type: 'success',
+        });
+    }
+
+    if (page.props.flash.error) {
+        toast(page.props.flash.error, {
+            type: 'error'
+        });
+    }
+}, { deep: true, immediate: true });
 </script>

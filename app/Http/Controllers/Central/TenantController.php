@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Central;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class TenantController extends Controller
@@ -47,7 +48,7 @@ class TenantController extends Controller
 
         $tenant->domains()->create(['domain' => str_replace(' ', '-', strtolower($validated['name'])) . '.localhost']);
 
-        return to_route('tenants.index');
+        return to_route('tenants.index')->with('success', 'New Tenant has been created');
     }
 
     /**
@@ -61,24 +62,38 @@ class TenantController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Tenant $tenant)
     {
-        //
+        return Inertia::render('Central/Tenant/TenantEdit', [
+            'tenant' => $tenant
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Tenant $tenant)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255', 'unique:tenants,data->name,' . $tenant->id],
+            'address' => ['required', 'string', 'max:255'],
+        ]);
+
+        $tenant->update($validated);
+
+        return to_route('tenants.index')->with('success', 'Tenant has been updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Tenant $tenant)
     {
-        //
+        $dbName = $tenant->id;
+        $tenant->delete();
+
+        DB::query('DROP DATABASE tenant_' . $dbName);
+
+        return to_route('tenants.index')->with('success', 'Tenant has been deleted');
     }
 }
