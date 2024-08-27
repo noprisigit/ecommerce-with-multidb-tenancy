@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Central;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +14,11 @@ class TenantController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Central/Tenant/TenantIndex');
+        $tenants = Tenant::query()->get();
+
+        return Inertia::render('Central/Tenant/TenantIndex', [
+            'tenants' => $tenants
+        ]);
     }
 
     /**
@@ -29,7 +34,20 @@ class TenantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255']
+        ]);
+
+        $tenant = Tenant::query()->create([
+            'id' => str_replace(' ', '_', strtolower($validated['name'])),
+            'name' => $validated['name'],
+            'address' => $validated['address']
+        ]);
+
+        $tenant->domains()->create(['domain' => str_replace(' ', '-', strtolower($validated['name'])) . '.localhost']);
+
+        return to_route('tenants.index');
     }
 
     /**
