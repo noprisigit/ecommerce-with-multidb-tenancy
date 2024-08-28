@@ -24,10 +24,12 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::redirect('/', '/dashboard');
+    Route::get('/', \App\Http\Controllers\Tenant\HomeController::class)->name('home');
 
     Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login');
     Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
+    Route::get('register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register');
+    Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
 
     Route::middleware('auth')->group(function () {
         Route::get('/dashboard', function () {
@@ -39,6 +41,8 @@ Route::middleware([
         Route::resource('users', \App\Http\Controllers\Tenant\UserController::class);
         Route::resource('customers', \App\Http\Controllers\Tenant\CustomerController::class);
         Route::resource('products', \App\Http\Controllers\Tenant\ProductController::class);
+
+        Route::resource('carts', \App\Http\Controllers\Tenant\CartController::class);
 
         Route::post('logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout');
     });

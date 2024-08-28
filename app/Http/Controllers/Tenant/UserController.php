@@ -45,6 +45,7 @@ class UserController extends Controller
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
+        $validated['role'] = RoleEnum::ADMINISTRATOR;
         $validated['email_verified_at'] = now();
 
         User::query()->create($validated);

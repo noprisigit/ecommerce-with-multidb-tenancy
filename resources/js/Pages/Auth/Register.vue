@@ -4,13 +4,14 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 
 const form = useForm({
+    name: null,
     email: null,
     password: null,
-    remember: false,
+    passwordConfirmation: null,
 });
 
 const handleSubmit = () => {
-    form.post(route('login'), {
+    form.post(route('register'), {
         onSuccess: () => form.reset('password')
     });
 }
@@ -24,8 +25,15 @@ const handleSubmit = () => {
         <div>
             <div class="card card-md">
                 <div class="card-body">
-                    <h2 class="h2 text-center mb-4">Login to your account</h2>
+                    <h2 class="h2 text-center mb-4">Register your account</h2>
                     <form @submit.prevent="handleSubmit" method="get" autocomplete="off">
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" v-model="form.name" class="form-control" :class="{
+                                'is-invalid': form.errors.name
+                            }" placeholder="Your name" autocomplete="off">
+                            <div class="invalid-feedback" v-show="form.errors.name">{{ form.errors.name }}</div>
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Email address</label>
                             <input type="email" v-model="form.email" class="form-control" :class="{
@@ -36,9 +44,6 @@ const handleSubmit = () => {
                         <div class="mb-2">
                             <label class="form-label">
                                 Password
-                                <!-- <span class="form-label-description">
-                                    <a href="./forgot-password.html">I forgot password</a>
-                                </span> -->
                             </label>
                             <div class="input-group input-group-flat">
                                 <input type="password" v-model="form.password" class="form-control" :class="{
@@ -49,19 +54,25 @@ const handleSubmit = () => {
                             </div>
                         </div>
                         <div class="mb-2">
-                            <label class="form-check">
-                                <input type="checkbox" v-model="form.remember" class="form-check-input" />
-                                <span class="form-check-label">Remember me on this device</span>
+                            <label class="form-label">
+                                Password Confirmation
                             </label>
+                            <div class="input-group input-group-flat">
+                                <input type="password" v-model="form.passwordConfirmation" class="form-control" :class="{
+                                    'is-invalid': form.errors.passwordConfirmation
+                                }" placeholder="Your password confirmation" autocomplete="off">
+                                <div class="invalid-feedback" v-show="form.errors.passwordConfirmation">{{ form.errors.passwordConfirmation }}
+                                </div>
+                            </div>
                         </div>
                         <div class="form-footer">
-                            <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="text-center text-secondary mt-3">
-                Don't have account yet? <Link :href="route('register')" tabindex="-1">Sign up</Link>
+                Already have account? <Link :href="route('login')" tabindex="-1">Sign In</Link>
             </div>
         </div>
     </GuestLayout>
