@@ -72,6 +72,19 @@
                                             </span>
                                         </Link>
                                     </li>
+                                    <li class="nav-item" :class="{
+                                        active: route().current('products*')
+                                    }">
+                                        <Link :href="route('products.index')" class="nav-link">
+                                            <span
+                                                class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                                <i class="fab fa-product-hunt"></i>
+                                            </span>
+                                            <span class="nav-link-title">
+                                                Products
+                                            </span>
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
 
