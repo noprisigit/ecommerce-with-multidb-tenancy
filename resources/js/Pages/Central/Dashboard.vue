@@ -1,15 +1,18 @@
 <script setup>
 import CentralLayout from "@/Layouts/CentralLayout.vue";
+import { Head } from "@inertiajs/vue3";
 </script>
 
 <template>
     <CentralLayout>
+        <Head title="Dashboard" />
+
         <div class="page-header d-print-none">
             <div class="container-xl">
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <h2 class="page-title">
-                            Empty page
+                            Dashboard
                         </h2>
                     </div>
                 </div>

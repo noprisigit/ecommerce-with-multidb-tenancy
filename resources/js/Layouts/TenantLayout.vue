@@ -1,27 +1,3 @@
-<script setup>
-import { Link, usePage } from '@inertiajs/vue3';
-import { route } from '../../../vendor/tightenco/ziggy/src/js';
-import { watch } from 'vue';
-import { toast } from 'vue3-toastify';
-
-const page = usePage();
-
-watch(() => page.props.flash, () => {
-    if (page.props.flash.success) {
-        toast(page.props.flash.success, {
-            type: 'success',
-        });
-    }
-
-    if (page.props.flash.error) {
-        toast(page.props.flash.error, {
-            type: 'error'
-        });
-    }
-}, { deep: true, immediate: true });
-
-</script>
-
 <template>
     <div class="page">
         <!-- Navbar -->
@@ -48,20 +24,16 @@ watch(() => page.props.flash, () => {
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                             aria-label="Open user menu">
-                            <span class="avatar avatar-sm"
-                                style="background-image: url(./static/avatars/000m.jpg)"></span>
+                            <span class="avatar avatar-sm">
+                                <img :src="`https://ui-avatars.com/api/?name=${user.name}`" class="rounded" alt="User Image">
+                            </span>
                             <div class="d-none d-xl-block ps-2">
-                                <div>Paweł Kuna</div>
-                                <div class="mt-1 small text-secondary">UI Designer</div>
+                                <div>{{ user.name }}</div>
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="#" class="dropdown-item">Status</a>
                             <a href="./profile.html" class="dropdown-item">Profile</a>
-                            <a href="#" class="dropdown-item">Feedback</a>
-                            <div class="dropdown-divider"></div>
-                            <a href="./settings.html" class="dropdown-item">Settings</a>
-                            <a href="./sign-in.html" class="dropdown-item">Logout</a>
+                            <a href="javascript:void(0)" @click="handleLogout" class="dropdown-item">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -160,3 +132,32 @@ watch(() => page.props.flash, () => {
         </div>
     </div>
 </template>
+
+<script setup>
+import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { route } from '../../../vendor/tightenco/ziggy/src/js';
+import { computed, watch } from 'vue';
+import { toast } from 'vue3-toastify';
+
+const page = usePage();
+const user = computed(() => page.props.user);
+const form = useForm({});
+
+watch(() => page.props.flash, () => {
+    if (page.props.flash.success) {
+        toast(page.props.flash.success, {
+            type: 'success',
+        });
+    }
+
+    if (page.props.flash.error) {
+        toast(page.props.flash.error, {
+            type: 'error'
+        });
+    }
+}, { deep: true, immediate: true });
+
+const handleLogout = () => {
+    form.post(route('logout'));
+}
+</script>

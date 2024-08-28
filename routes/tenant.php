@@ -26,11 +26,18 @@ Route::middleware([
 ])->group(function () {
     Route::redirect('/', '/dashboard');
 
-    Route::get('/dashboard', function() {
-        return Inertia::render('Tenant/Dashboard', [
-            'tenantName' => tenant('name')
-        ]);
-    })->name('dashboard');
+    Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login');
+    Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 
-    Route::resource('users', \App\Http\Controllers\Tenant\UserController::class);
+    Route::middleware('auth')->group(function () {
+        Route::get('/dashboard', function () {
+            return Inertia::render('Tenant/Dashboard', [
+                'tenantName' => tenant('name')
+            ]);
+        })->name('dashboard');
+
+        Route::resource('users', \App\Http\Controllers\Tenant\UserController::class);
+
+        Route::post('logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout');
+    });
 });
