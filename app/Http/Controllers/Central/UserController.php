@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Tenant;
+namespace App\Http\Controllers\Central;
 
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
@@ -10,20 +10,15 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
-            return abort(403);
-        }
-
         $users = User::query()
-            ->where('role', RoleEnum::ADMINISTRATOR)
             ->get();
 
-        return Inertia::render('Tenant/User/UserIndex', [
+        return Inertia::render('Central/User/UserIndex', [
             'users' => $users
         ]);
     }
@@ -33,11 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
-            return abort(403);
-        }
-
-        return Inertia::render('Tenant/User/UserCreate');
+        return Inertia::render('Central/User/UserCreate');
     }
 
     /**
@@ -45,10 +36,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
-            return abort(403);
-        }
-
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'unique:users,email'],
@@ -57,7 +44,6 @@ class UserController extends Controller
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
-        $validated['role'] = RoleEnum::ADMINISTRATOR;
         $validated['email_verified_at'] = now();
 
         User::query()->create($validated);
@@ -78,11 +64,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
-            return abort(403);
-        }
-
-        return Inertia::render('Tenant/User/UserEdit', [
+        return Inertia::render('Central/User/UserEdit', [
             'user' => $user
         ]);
     }
@@ -92,10 +74,6 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
-            return abort(403);
-        }
-
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'unique:users,email,' . $user->id],
@@ -119,10 +97,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
-            return abort(403);
-        }
-
         $user->delete();
 
         return to_route('users.index')->with('success', 'User has been deleted');

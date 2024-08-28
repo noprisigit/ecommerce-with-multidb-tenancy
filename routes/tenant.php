@@ -32,11 +32,7 @@ Route::middleware([
     Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
 
     Route::middleware('auth')->group(function () {
-        Route::get('/dashboard', function () {
-            return Inertia::render('Tenant/Dashboard', [
-                'tenantName' => tenant('name')
-            ]);
-        })->name('dashboard');
+        Route::get('/dashboard', \App\Http\Controllers\Tenant\DashboardController::class)->name('dashboard');
 
         Route::resource('users', \App\Http\Controllers\Tenant\UserController::class);
         Route::resource('customers', \App\Http\Controllers\Tenant\CustomerController::class);

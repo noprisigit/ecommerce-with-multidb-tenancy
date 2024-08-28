@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tenant\Product\CreateProductRequest;
 use App\Http\Requests\Tenant\Product\UpdateProductRequest;
@@ -18,6 +19,10 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
+            return abort(403);
+        }
+
         $products = Product::query()->get();
 
         return Inertia::render('Tenant/Product/ProductIndex', [
@@ -30,6 +35,10 @@ class ProductController extends Controller
      */
     public function create()
     {
+        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
+            return abort(403);
+        }
+
         return Inertia::render('Tenant/Product/ProductCreate');
     }
 
@@ -38,6 +47,10 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
+        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
+            return abort(403);
+        }
+
         $validated = $request->validated();
 
         if ($request->hasFile('image') && !empty($validated['image'])) {
@@ -66,6 +79,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
+            return abort(403);
+        }
+
         return Inertia::render('Tenant/Product/ProductEdit', [
             'product' => $product
         ]);
@@ -76,6 +93,10 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
+        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
+            return abort(403);
+        }
+
         $validated = $request->validated();
 
         if ($request->hasFile('image') && !empty($validated['image'])) {
@@ -100,6 +121,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
+            return abort(403);
+        }
+
         if (Storage::exists($product->image_path)) {
             Storage::delete($product->image_path);
         }

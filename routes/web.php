@@ -9,11 +9,10 @@ Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'index']
 Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 
 Route::middleware('auth')->group(function() {
-    Route::get('/dashboard', function() {
-        return Inertia::render('Central/Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', \App\Http\Controllers\Central\DashboardController::class)->name('dashboard');
 
     Route::resource('tenants', \App\Http\Controllers\Central\TenantController::class);
+    Route::resource('users', \App\Http\Controllers\Central\UserController::class);
 
     Route::post('logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout');
 });

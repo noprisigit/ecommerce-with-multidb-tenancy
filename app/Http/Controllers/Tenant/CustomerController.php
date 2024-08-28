@@ -15,6 +15,10 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
+            return abort(403);
+        }
+
         $customers = User::query()
             ->where('role', RoleEnum::CUSTOMER)
             ->get();
@@ -45,6 +49,10 @@ class CustomerController extends Controller
      */
     public function show(User $customer)
     {
+        if (auth()->user()->role != RoleEnum::ADMINISTRATOR) {
+            return abort(403);
+        }
+
         return Inertia::render('Tenant/Customer/CustomerShow', [
             'customer' => $customer
         ]);
