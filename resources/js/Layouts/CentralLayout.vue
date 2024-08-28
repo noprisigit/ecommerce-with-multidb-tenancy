@@ -32,7 +32,6 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="./profile.html" class="dropdown-item">Profile</a>
                             <a href="javascript:void(0)" @click="handleLogout" class="dropdown-item">Logout</a>
                         </div>
                     </div>

@@ -37,6 +37,7 @@ Route::middleware([
         })->name('dashboard');
 
         Route::resource('users', \App\Http\Controllers\Tenant\UserController::class);
+        Route::resource('customers', \App\Http\Controllers\Tenant\CustomerController::class);
         Route::resource('products', \App\Http\Controllers\Tenant\ProductController::class);
 
         Route::post('logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout');

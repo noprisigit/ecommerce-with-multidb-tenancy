@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,7 +15,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::query()->get();
+        $users = User::query()
+            ->where('role', RoleEnum::ADMINISTRATOR)
+            ->get();
 
         return Inertia::render('Tenant/User/UserIndex', [
             'users' => $users

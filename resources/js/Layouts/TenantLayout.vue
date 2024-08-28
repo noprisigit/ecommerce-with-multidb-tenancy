@@ -32,7 +32,6 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="./profile.html" class="dropdown-item">Profile</a>
                             <a href="javascript:void(0)" @click="handleLogout" class="dropdown-item">Logout</a>
                         </div>
                     </div>
@@ -69,6 +68,19 @@
                                             </span>
                                             <span class="nav-link-title">
                                                 Users
+                                            </span>
+                                        </Link>
+                                    </li>
+                                    <li class="nav-item" :class="{
+                                        active: route().current('customers*')
+                                    }">
+                                        <Link :href="route('customers.index')" class="nav-link">
+                                            <span
+                                                class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                                <i class="fas fa-user-circle"></i>
+                                            </span>
+                                            <span class="nav-link-title">
+                                                Customers
                                             </span>
                                         </Link>
                                     </li>
